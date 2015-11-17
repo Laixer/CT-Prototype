@@ -1,0 +1,51 @@
+Options +FollowSymlinks
+RewriteEngine on
+
+# Redirect from www
+#RewriteCond %{http_host} ^www\.calctool\.nl [NC]
+#RewriteRule ^(.*)$ http://calctool.nl/$1 [R=301,NC]
+
+# Default root index
+RewriteRule ^(/)?$ account/index.php [L]
+
+# Account redirects
+RewriteRule ^register/ account/registration.php
+RewriteRule ^forgot/$ account/forgot.php
+RewriteRule ^signout/ /account/signout.php
+
+# Main tool
+RewriteRule ^maintoolv2/$ /main/index.php
+
+# Popups
+RewriteRule ^maintoolv2/chapter-mgr/$ /main/project/chapter.pop.inc.php
+RewriteRule ^maintoolv2/profit-mgr/$ /main/project/profit.pop.inc.php
+RewriteRule ^maintoolv2/material-mgr/$ /main/materiaaldb/picker.pop.inc.php
+RewriteRule ^maintoolv2/offer-mgr/$ /main/mod.calculatie/genoffer.pop.inc.php
+RewriteRule ^maintoolv2/pdf-mgr/$ /main/mod.calculatie/genpdf.pop.inc.php
+RewriteRule ^maintoolv2/shoppinglist-mgr/$ /main/mod.calculatie/shopoffer.pop.inc.php
+
+# Resource embed
+RewriteRule ^maintoolv2/resource-embed/([0-9]+)-([0-9]+).img$ /main/resource/embed.inc.php?u_id=$1&r_id=$2
+
+## Safety
+
+# proc/self/environ? no way!
+RewriteCond %{QUERY_STRING} proc/self/environ [OR]
+ 
+# Block out any script trying to set a mosConfig value through the URL
+RewriteCond %{QUERY_STRING} mosConfig_[a-zA-Z_]{1,21}(=|\%3D) [OR]
+ 
+# Block out any script trying to base64_encode crap to send via URL
+RewriteCond %{QUERY_STRING} base64_encode.*(.*) [OR]
+ 
+# Block out any script that includes a <script> tag in URL
+RewriteCond %{QUERY_STRING} (<|%3C).*script.*(>|%3E) [NC,OR]
+ 
+# Block out any script trying to set a PHP GLOBALS variable via URL
+RewriteCond %{QUERY_STRING} GLOBALS(=|[|\%[0-9A-Z]{0,2}) [OR]
+ 
+# Block out any script trying to modify a _REQUEST variable via URL
+RewriteCond %{QUERY_STRING} _REQUEST(=|[|\%[0-9A-Z]{0,2})
+ 
+# Send all blocked request to homepage with 403 Forbidden error!
+RewriteRule ^(.*)$ index.php [F,L]

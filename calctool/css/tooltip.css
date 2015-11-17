@@ -1,0 +1,35 @@
+.tooltip {
+	color: #000000; outline: none;
+	text-decoration: none;
+	position: relative;
+	cursor:default;
+}
+.tooltip span {
+	margin-left: -999em;
+	position: absolute;
+}
+.tooltip:hover span {
+	border-radius: 5px 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-webkit-box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+	font-family: Calibri, Tahoma, Geneva, sans-serif;
+	position: absolute;
+	left: 25px;
+	z-index: 99;
+	margin-left: 0;
+	width: 250px;
+	font-size:14px;
+	font-weight: normal;
+}
+.tooltip .tt-title {
+	font-weight:bold;
+	margin-bottom: 5px;
+}
+.tooltip .classic {
+	background: #FFFFAA;
+	border: 1px solid #FFAD33;
+	padding: 0.8em 1em;
+}
